@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="BehaviorTree">
+        <KeepRunningUntilFailure>
+            <Sequence>
+                <Sequence name="Go to door">
+                    <Action ID="Get_waypoint" waypoint="" wp_id="door"/>
+                    <Action ID="Go_to_waypoint" waypoint=""/>
+                </Sequence>
+                <Sequence>
+                    <Action ID="Get_waypoint" waypoint="" wp_id="party"/>
+                    <Action ID="Go_to_waypoint" waypoint=""/>
+                </Sequence>
+                <Sequence>
+                    <Action ID="Get_waypoint" waypoint="" wp_id="bar"/>
+                    <Action ID="Go_to_waypoint" waypoint=""/>
+                </Sequence>
+                <Sequence>
+                    <Action ID="Get_waypoint" waypoint="" wp_id="person"/>
+                    <Action ID="Go_to_waypoint" waypoint=""/>
+                </Sequence>
+            </Sequence>
+        </KeepRunningUntilFailure>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="Get_waypoint">
+            <output_port name="waypoint"/>
+            <input_port default="door" name="wp_id"/>
+        </Action>
+        <Action ID="Go_to_waypoint">
+            <input_port name="waypoint"/>
+        </Action>
+        <Action ID="Turn"/>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
