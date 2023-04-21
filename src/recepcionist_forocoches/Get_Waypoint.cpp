@@ -25,7 +25,6 @@ Get_Waypoint::Get_Waypoint(
 : BT::ActionNodeBase(xml_tag_name, conf)
 {
   config().blackboard->get("node", node_);
-
 }
 
 void

@@ -25,7 +25,6 @@ Go_to_Waypoint::Go_to_Waypoint(
 : BT::ActionNodeBase(xml_tag_name, conf)
 {
   config().blackboard->get("node", node_);
-
 }
 
 void
