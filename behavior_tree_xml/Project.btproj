@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4" project_name="Project">
+    <include path="recepcionist.xml"/>
+    <!-- Description of Node Models (used by Groot) -->
+    <TreeNodesModel>
+        <Action ID="Get_Waypoint" editable="false">
+            <input_port name="wp_id" default="door"/>
+            <output_port name="waypoint"/>
+        </Action>
+        <Action ID="Go_to_Waypoint" editable="false">
+            <input_port name="waypoint"/>
+        </Action>
+    </TreeNodesModel>
+</root>
