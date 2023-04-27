@@ -20,7 +20,7 @@
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 
-#include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/pose_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace recepcionist_forocoches
@@ -38,13 +38,19 @@ public:
 
   static BT::PortsList providedPorts()
   {
-    return BT::PortsList({});
+    return BT::PortsList(
+      {
+        BT::InputPort<std::string>("wp_id"),
+        BT::OutputPort<geometry_msgs::msg::PoseStamped>("waypoint")
+      });
   }
 
 private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
+  geometry_msgs::msg::PoseStamped door_point_;
+  geometry_msgs::msg::PoseStamped party_point_;
+  geometry_msgs::msg::PoseStamped bar_point_;
 };
 
 }  // namespace recepcionist_forocoches

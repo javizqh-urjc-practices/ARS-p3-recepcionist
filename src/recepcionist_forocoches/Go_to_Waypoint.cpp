@@ -38,6 +38,10 @@ Go_to_Waypoint::tick()
   if (status() == BT::NodeStatus::IDLE) {
     start_time_ = node_->now();
   }
+  geometry_msgs::msg::PoseStamped goal;
+  getInput("waypoint", goal);
+
+  // goal_.pose = goal;
   return BT::NodeStatus::SUCCESS;
 }
 }  // namespace recepcionist_forocoches

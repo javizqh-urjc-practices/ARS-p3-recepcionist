@@ -17,10 +17,11 @@
 
 #include <string>
 
+#include "geometry_msgs/msg/pose_stamped.hpp"
+#include "nav2_msgs/action/navigate_to_pose.hpp"
+
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
-
-#include "geometry_msgs/msg/twist.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace recepcionist_forocoches
@@ -38,13 +39,14 @@ public:
 
   static BT::PortsList providedPorts()
   {
-    return BT::PortsList({});
+    return {
+      BT::InputPort<geometry_msgs::msg::PoseStamped>("waypoint")
+    };
   }
 
 private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
 };
 
 }  // namespace recepcionist_forocoches

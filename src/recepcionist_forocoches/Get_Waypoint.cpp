@@ -25,6 +25,25 @@ Get_Waypoint::Get_Waypoint(
 : BT::ActionNodeBase(xml_tag_name, conf)
 {
   config().blackboard->get("node", node_);
+
+  geometry_msgs::msg::PoseStamped wp;
+  wp.header.frame_id = "map";
+  wp.pose.orientation.w = 1.0;
+
+  // door wp
+  wp.pose.position.x = 3.67;
+  wp.pose.position.y = -0.24;
+  door_point_ = wp;
+
+  // party wp
+  wp.pose.position.x = 1.07;
+  wp.pose.position.y = -12.38;
+  party_point_ = wp;
+
+  // bar wp
+  wp.pose.position.x = -5.32;
+  wp.pose.position.y = -8.85;
+  bar_point_ = wp;
 }
 
 void
@@ -38,6 +57,20 @@ Get_Waypoint::tick()
   if (status() == BT::NodeStatus::IDLE) {
     start_time_ = node_->now();
   }
+
+  std::string id;
+  getInput("wp_id", id);
+
+  if (id == "door") {
+    setOutput("waypoint", door_point_);
+  } else if (id == "party") {
+    setOutput("waypoint", party_point_);
+  } else if (id == "bar") {
+    setOutput("waypoint", bar_point_);
+  } else if (id == "person") {
+    setOutput("waypoint", party_point_);
+  }
+
   return BT::NodeStatus::SUCCESS;
 }
 }  // namespace recepcionist_forocoches

@@ -8,10 +8,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(kobuki_ros_interfaces REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(vision_msgs REQUIRED)
-find_package(tf2_ros REQUIRED)
-find_package(tf2_geometry_msgs REQUIRED)
+find_package(action_msgs REQUIRED)
+find_package(nav2_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
@@ -26,15 +24,13 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 
 set(dependencies
+    action_msgs
     rclcpp
-    tf2_ros
-    tf2_geometry_msgs
     behaviortree_cpp_v3
-    sensor_msgs
-    vision_msgs
-    geometry_msgs
     ament_index_cpp
     kobuki_ros_interfaces
+    nav2_msgs
+    geometry_msgs
 )
 
 include_directories(include ${ZMQ_INCLUDE_DIRS})
