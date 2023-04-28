@@ -26,24 +26,33 @@ Get_Waypoint::Get_Waypoint(
 {
   config().blackboard->get("node", node_);
 
-  geometry_msgs::msg::PoseStamped wp;
-  wp.header.frame_id = "map";
-  wp.pose.orientation.w = 1.0;
+  geometry_msgs::msg::PoseStamped wp[4];
 
+  for (int i = 0; i < 4; i++) {
+    wp[i].header.frame_id = "map";
+    wp[i].pose.orientation.w = 1;
+  }
+
+  // TODO: Use params and enums for simplifying coords
   // door wp
-  wp.pose.position.x = 3.67;
-  wp.pose.position.y = -0.24;
-  door_point_ = wp;
+  wp[0].pose.position.x = 3;
+  wp[0].pose.position.y = 3;
+  door_point_ = wp[0];
 
   // party wp
-  wp.pose.position.x = 1.07;
-  wp.pose.position.y = -12.38;
-  party_point_ = wp;
+  wp[1].pose.position.x = 2;
+  wp[1].pose.position.y = 2;
+  party_point_ = wp[1];
 
   // bar wp
-  wp.pose.position.x = -5.32;
-  wp.pose.position.y = -8.85;
-  bar_point_ = wp;
+  wp[2].pose.position.x = 1;
+  wp[2].pose.position.y = 1;
+  bar_point_ = wp[2];
+
+  // person wp
+  wp[3].pose.position.x = 0.5;
+  wp[3].pose.position.y = 0.5;
+  person_point_ = wp[3];
 }
 
 void
@@ -62,13 +71,20 @@ Get_Waypoint::tick()
   getInput("wp_id", id);
 
   if (id == "door") {
+    RCLCPP_INFO(node_->get_logger(), "DOOR");
     setOutput("waypoint", door_point_);
   } else if (id == "party") {
+    RCLCPP_INFO(node_->get_logger(), "PARTY");
     setOutput("waypoint", party_point_);
   } else if (id == "bar") {
+    RCLCPP_INFO(node_->get_logger(), "BAR");
     setOutput("waypoint", bar_point_);
   } else if (id == "person") {
+    RCLCPP_INFO(node_->get_logger(), "PERSON");
     setOutput("waypoint", party_point_);
+  } else {
+    RCLCPP_ERROR(node_->get_logger(), "Invalid waypoint requested");
+    return BT::NodeStatus::FAILURE;
   }
 
   return BT::NodeStatus::SUCCESS;

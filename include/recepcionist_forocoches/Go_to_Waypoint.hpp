@@ -17,6 +17,7 @@
 
 #include <string>
 
+#include "rclcpp_action/rclcpp_action.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 
@@ -30,13 +31,22 @@ namespace recepcionist_forocoches
 class Go_to_Waypoint : public BT::ActionNodeBase
 {
 public:
+
+  using NavigateToPose = nav2_msgs::action::NavigateToPose;
+  using GoalHandleNavigateToPose = rclcpp_action::ClientGoalHandle<NavigateToPose>;
+
+  // --- Constructor ---
   explicit Go_to_Waypoint(
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
+  // Startup Callback 
   void halt();
+
+  // Startup Callback 
   BT::NodeStatus tick();
 
+  // BT PortsList
   static BT::PortsList providedPorts()
   {
     return {
@@ -44,9 +54,21 @@ public:
     };
   }
 
+protected:
+
+  // Navigation Callbacks
+  void goal_response_callback(const GoalHandleNavigateToPose::SharedPtr & goal_handle);
+  void feedback_callback(
+    GoalHandleNavigateToPose::SharedPtr,
+    const std::shared_ptr<const NavigateToPose::Feedback> feedback);
+  void result_callback(const GoalHandleNavigateToPose::WrappedResult & result);
+
 private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
+  rclcpp_action::Client<NavigateToPose>::SharedPtr action_client_;
+  NavigateToPose::Goal goal_;
+  BT::NodeStatus bt_status_;
 };
 
 }  // namespace recepcionist_forocoches

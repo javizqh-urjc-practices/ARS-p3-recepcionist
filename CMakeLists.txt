@@ -6,8 +6,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CONFIG_PATH}")
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(behaviortree_cpp_v3 REQUIRED)
-find_package(kobuki_ros_interfaces REQUIRED)
 find_package(action_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -26,9 +26,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(dependencies
     action_msgs
     rclcpp
+    rclcpp_action
     behaviortree_cpp_v3
     ament_index_cpp
-    kobuki_ros_interfaces
     nav2_msgs
     geometry_msgs
 )

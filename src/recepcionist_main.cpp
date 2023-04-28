@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
   factory.registerFromPlugin(loader.getOSName("recepcionist_get_waypoint_bt_node"));
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("recepcionist_forocoches");
-  std::string xml_file = pkgpath + "/behavior_tree_xml/seek_and_capture.xml";
+  std::string xml_file = pkgpath + "/behavior_tree_xml/recepcionist.xml";
 
   auto blackboard = BT::Blackboard::create();
   blackboard->set("node", node);

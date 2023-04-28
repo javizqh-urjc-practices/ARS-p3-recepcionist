@@ -4,24 +4,32 @@
     <KeepRunningUntilFailure>
       <Sequence>
         <Sequence name="Go to door">
-          <Get_Waypoint wp_id="door"
+          <Get_waypoint name="Get_Waypoint"
+                        wp_id="door"
                         waypoint=""/>
-          <Go_to_Waypoint waypoint="0.0"/>
+          <Go_to_waypoint name="Go_to_Waypoint"
+                          waypoint=""/>
         </Sequence>
         <Sequence>
-          <Get_Waypoint wp_id="party"
+          <Get_waypoint name="Get_Waypoint"
+                        wp_id="party"
                         waypoint=""/>
-          <Go_to_Waypoint waypoint=""/>
+          <Go_to_waypoint name="Go_to_Waypoint"
+                          waypoint=""/>
         </Sequence>
         <Sequence>
-          <Get_Waypoint wp_id="bar"
+          <Get_waypoint name="Get_Waypoint"
+                        wp_id="bar"
                         waypoint=""/>
-          <Go_to_Waypoint waypoint=""/>
+          <Go_to_waypoint name="Go_to_Waypoint"
+                          waypoint=""/>
         </Sequence>
         <Sequence>
-          <Get_Waypoint wp_id="person"
+          <Get_waypoint name="Get_Waypoint"
+                        wp_id="person"
                         waypoint=""/>
-          <Go_to_Waypoint waypoint=""/>
+          <Go_to_waypoint name="Go_to_Waypoint"
+                          waypoint=""/>
         </Sequence>
       </Sequence>
     </KeepRunningUntilFailure>
@@ -29,13 +37,13 @@
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <Action ID="Get_Waypoint"
+    <Action ID="Get_waypoint"
             editable="false">
       <input_port name="wp_id"
                   default="door"/>
       <output_port name="waypoint"/>
     </Action>
-    <Action ID="Go_to_Waypoint"
+    <Action ID="Go_to_waypoint"
             editable="false">
       <input_port name="waypoint"/>
     </Action>
