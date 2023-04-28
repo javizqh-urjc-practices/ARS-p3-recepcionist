@@ -15,6 +15,7 @@
 #ifndef RECEPCIONIST_FOROCOCHES__GO_TO_WAYPOINT_HPP_
 #define RECEPCIONIST_FOROCOCHES__GO_TO_WAYPOINT_HPP_
 
+#include <memory>
 #include <string>
 
 #include "rclcpp_action/rclcpp_action.hpp"
@@ -31,7 +32,6 @@ namespace recepcionist_forocoches
 class Go_to_Waypoint : public BT::ActionNodeBase
 {
 public:
-
   using NavigateToPose = nav2_msgs::action::NavigateToPose;
   using GoalHandleNavigateToPose = rclcpp_action::ClientGoalHandle<NavigateToPose>;
 
@@ -40,10 +40,10 @@ public:
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
-  // Startup Callback 
+  // Startup Callback
   void halt();
 
-  // Startup Callback 
+  // Startup Callback
   BT::NodeStatus tick();
 
   // BT PortsList
@@ -55,7 +55,6 @@ public:
   }
 
 protected:
-
   // Navigation Callbacks
   void goal_response_callback(const GoalHandleNavigateToPose::SharedPtr & goal_handle);
   void feedback_callback(
