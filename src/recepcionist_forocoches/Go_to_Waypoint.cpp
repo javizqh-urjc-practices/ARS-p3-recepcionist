@@ -30,8 +30,9 @@ Go_to_Waypoint::Go_to_Waypoint(
   config().blackboard->get("node", node_);
 
   // Building Action Client
-  action_client_ = rclcpp_action::create_client<recepcionist_forocoches::Go_to_Waypoint::NavigateToPose>(
-      node_, "navigate_to_pose");
+  action_client_ =
+    rclcpp_action::create_client<recepcionist_forocoches::Go_to_Waypoint::NavigateToPose>(
+    node_, "navigate_to_pose");
 
   // Building goal
   goal_ = NavigateToPose::Goal();
@@ -46,34 +47,31 @@ Go_to_Waypoint::halt()
 BT::NodeStatus
 Go_to_Waypoint::tick()
 {
-
   // --- Initializing Action (if inactive)---
-  if (status() == BT::NodeStatus::IDLE)
-  {
-
+  if (status() == BT::NodeStatus::IDLE) {
     // --- Settling pose ---
     geometry_msgs::msg::PoseStamped wp;
     getInput("waypoint", wp);
     goal_.pose = wp;
 
-    if (!action_client_->wait_for_action_server())
-    {
+    if (!action_client_->wait_for_action_server()) {
       RCLCPP_ERROR(node_->get_logger(), "Action server not available after waiting");
       rclcpp::shutdown();
     }
 
-    RCLCPP_INFO(node_->get_logger(), "Info: %lf,%lf",goal_.pose.pose.position.x,goal_.pose.pose.position.y);
+    RCLCPP_INFO(
+      node_->get_logger(), "Info: %lf,%lf", goal_.pose.pose.position.x,
+      goal_.pose.pose.position.y);
 
     // --- Initializing Action ---
-    auto send_goal_options =
-        rclcpp_action::Client<NavigateToPose>::SendGoalOptions();
+    auto send_goal_options = rclcpp_action::Client<NavigateToPose>::SendGoalOptions();
 
     send_goal_options.goal_response_callback =
-        std::bind(&Go_to_Waypoint::goal_response_callback, this, _1);
+      std::bind(&Go_to_Waypoint::goal_response_callback, this, _1);
     send_goal_options.feedback_callback =
-        std::bind(&Go_to_Waypoint::feedback_callback, this, _1, _2);
+      std::bind(&Go_to_Waypoint::feedback_callback, this, _1, _2);
     send_goal_options.result_callback =
-        std::bind(&Go_to_Waypoint::result_callback, this, _1);
+      std::bind(&Go_to_Waypoint::result_callback, this, _1);
 
     // --- Starting Navigation ---
     RCLCPP_INFO(node_->get_logger(), "Sending goal...");
@@ -126,9 +124,7 @@ Go_to_Waypoint::result_callback(const GoalHandleNavigateToPose::WrappedResult & 
       bt_status_ = BT::NodeStatus::FAILURE;
       return;
   }
-
 }
-
 }  // namespace recepcionist_forocoches
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)

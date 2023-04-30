@@ -51,7 +51,6 @@ private:
   geometry_msgs::msg::PoseStamped door_point_;
   geometry_msgs::msg::PoseStamped party_point_;
   geometry_msgs::msg::PoseStamped bar_point_;
-  geometry_msgs::msg::PoseStamped person_point_;
 };
 
 }  // namespace recepcionist_forocoches
