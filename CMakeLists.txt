@@ -9,6 +9,7 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(action_msgs REQUIRED)
+find_package(vision_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
@@ -25,6 +26,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(dependencies
     action_msgs
+    vision_msgs
     rclcpp
     rclcpp_action
     behaviortree_cpp_v3
@@ -37,10 +39,12 @@ include_directories(include ${ZMQ_INCLUDE_DIRS})
 
 add_library(recepcionist_go_to_waypoint_bt_node SHARED src/recepcionist_forocoches/Go_to_Waypoint.cpp)
 add_library(recepcionist_get_waypoint_bt_node SHARED src/recepcionist_forocoches/Get_Waypoint.cpp)
+add_library(recepcionist_wait_person_bt_node SHARED src/recepcionist_forocoches/Wait_Person.cpp)
 
 list(APPEND plugin_libs
   recepcionist_go_to_waypoint_bt_node
   recepcionist_get_waypoint_bt_node
+  recepcionist_wait_person_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})
