@@ -31,6 +31,16 @@ int main(int argc, char * argv[])
 
   auto node = rclcpp::Node::make_shared("recepcionist_forocoches_node");
 
+  node->declare_parameter("door.pose.position.x", 0.0);
+  node->declare_parameter("door.pose.position.y", 0.0);
+  node->declare_parameter("door.pose.orientation.w", 0.0);
+  node->declare_parameter("party.pose.position.x", 0.0);
+  node->declare_parameter("party.pose.position.y", 0.0);
+  node->declare_parameter("party.pose.orientation.w", 0.0);
+  node->declare_parameter("bar.pose.position.x", 0.0);
+  node->declare_parameter("bar.pose.position.y", 0.0);
+  node->declare_parameter("bar.pose.orientation.w", 0.0);
+
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
 
