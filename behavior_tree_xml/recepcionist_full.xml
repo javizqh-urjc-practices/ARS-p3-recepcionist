@@ -7,7 +7,7 @@
                 <Sequence name="Go to door">
                     <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="door"/>
                     <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
-                    <Condition ID="Wait_Person"/>
+                    <Action ID="Wait_Person"/>
                     <Action ID="Ask_Name" person_name=""/>
                 </Sequence>
                 <Sequence name="Go to party">
@@ -54,7 +54,7 @@
         <Action ID="Sit_Person">
             <inout_port default="&quot;{chair}&quot;" name="chair"/>
         </Action>
-        <Condition ID="Wait_Person"/>
+        <Action ID="Wait_Person"/>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>
