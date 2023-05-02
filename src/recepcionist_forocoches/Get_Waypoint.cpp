@@ -28,21 +28,24 @@ Get_Waypoint::Get_Waypoint(
 
   geometry_msgs::msg::PoseStamped wp;
   wp.header.frame_id = "map";
-  wp.pose.orientation.w = 1.0;
 
   // door wp
-  wp.pose.position.x = 3.67;
-  wp.pose.position.y = -0.24;
+  wp.pose.position.x = node_->get_parameter("door.pose.position.x").as_double();
+  RCLCPP_INFO(node_->get_logger(), "Data: %f", wp.pose.position.x);
+  wp.pose.position.y = node_->get_parameter("door.pose.position.y").as_double();
+  wp.pose.orientation.w = node_->get_parameter("door.pose.orientation.w").as_double();
   door_point_ = wp;
 
   // party wp
-  wp.pose.position.x = 1.07;
-  wp.pose.position.y = -12.38;
+  wp.pose.position.x = node_->get_parameter("party.pose.position.x").as_double();
+  wp.pose.position.y = node_->get_parameter("party.pose.position.y").as_double();
+  wp.pose.orientation.w = node_->get_parameter("party.pose.orientation.w").as_double();
   party_point_ = wp;
 
   // bar wp
-  wp.pose.position.x = -5.32;
-  wp.pose.position.y = -8.85;
+  wp.pose.position.x = node_->get_parameter("bar.pose.position.x").as_double();
+  wp.pose.position.y = node_->get_parameter("bar.pose.position.y").as_double();
+  wp.pose.orientation.w = node_->get_parameter("bar.pose.orientation.w").as_double();
   bar_point_ = wp;
 }
 

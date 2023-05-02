@@ -46,6 +46,7 @@ public:
   }
 
 private:
+  static bool params_declared;
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
   geometry_msgs::msg::PoseStamped door_point_;
