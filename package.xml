@@ -18,6 +18,10 @@
   <depend>vision_msgs</depend>
   <depend>kobuki_ros_interfaces</depend>
   <depend>libzmq3-dev</depend>
+  <depend>sound_play</depend>
+  <depend>dialogflow_ros2_interfaces</depend>
+  <exec_depend>gb_dialog</exec_depend>
+  <build_depend>gb_dialog</build_depend>
   <depend>ament_index_cpp</depend>
 
   <test_depend>ament_lint_auto</test_depend>
