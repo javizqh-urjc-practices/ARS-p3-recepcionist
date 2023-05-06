@@ -19,7 +19,6 @@ namespace recepcionist_forocoches
 
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 Ask_Drink::Ask_Drink(
   const std::string & xml_tag_name,
@@ -28,22 +27,17 @@ Ask_Drink::Ask_Drink(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
-
-  dialog_.registerCallback(std::bind(&Ask_Drink::askDrinkIntentCB,this, _1));
-
-}
-
-void Ask_Drink::askDrink(){
-  sc_.say("What is your favourite drink?");
+  dialog_.registerCallback(std::bind(&Ask_Drink::askDrinkIntentCB, this, _1), "RequestDrink");
 }
 
 void Ask_Drink::askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
 {
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: intent [%s]", result.intent.c_str()); //WelcomeIntent
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: intent [%s]", result.intent.c_str());
 
-  //Consigue el nombre
-  auto name = result.parameters[0].value[0];
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: drink = %s", name.c_str());
+  auto drink = result.parameters[0].value[0];
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: drink = %s", drink.c_str());
+  responded_ = true;
+  setOutput("drink", drink.c_str());
 
   dialog_.speak(result.fulfillment_text);
 }
@@ -56,13 +50,18 @@ Ask_Drink::halt()
 BT::NodeStatus
 Ask_Drink::tick()
 {
+  responded_ = false;
   if (status() == BT::NodeStatus::IDLE) {
-    //dialog_.askDrink();
+    dialog_.speak("What is your favourite drink?");
     dialog_.listen();
   }
 
   rclcpp::spin_some(dialog_.get_node_base_interface());
-  return BT::NodeStatus::SUCCESS;
+  if (responded_) {
+    return BT::NodeStatus::SUCCESS;
+  } else {
+    return BT::NodeStatus::RUNNING;
+  }
 }
 
 

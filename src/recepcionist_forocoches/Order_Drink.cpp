@@ -19,7 +19,6 @@ namespace recepcionist_forocoches
 
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 Order_Drink::Order_Drink(
   const std::string & xml_tag_name,
@@ -28,8 +27,14 @@ Order_Drink::Order_Drink(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  dialog_.registerCallback(std::bind(&Order_Drink::orderDrinkIntentCB, this, _1), "Order Drink");
+}
 
-
+void Order_Drink::orderDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+{
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Order_Drink: intent [%s]", result.intent.c_str());
+  responded_ = true;
+  dialog_.speak(result.fulfillment_text);
 }
 
 void
@@ -40,14 +45,21 @@ Order_Drink::halt()
 BT::NodeStatus
 Order_Drink::tick()
 {
-    std::string drink;
-    getInput("drink",drink);//Add return FAILURE if no input 
+  std::string drink;
+  getInput("drink", drink);
 
-    std::string Order = "I need a " + drink;
-    sc.say(Order);
+  responded_ = false;
+  if (status() == BT::NodeStatus::IDLE) {
+    dialog_.speak("I need a " + drink);
+    dialog_.listen();
+  }
 
+  rclcpp::spin_some(dialog_.get_node_base_interface());
+  if (responded_) {
     return BT::NodeStatus::SUCCESS;
-
+  } else {
+    return BT::NodeStatus::RUNNING;
+  }
 }
 
 

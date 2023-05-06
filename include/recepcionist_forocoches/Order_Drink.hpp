@@ -22,18 +22,19 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sound_play.hpp"
+#include "gb_dialog/DialogInterface.hpp"
 
 namespace recepcionist_forocoches
 {
 class Order_Drink : public BT::ActionNodeBase
 {
-
 public:
-
   // Constructor
   explicit Order_Drink(
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
+
+  void orderDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
 
   // Startup Callback
   void halt();
@@ -53,7 +54,9 @@ private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
   BT::NodeStatus bt_status_;
-  sound_play::SoundClient sc;
+
+  gb_dialog::DialogInterface dialog_;
+  bool responded_ = false;
 };
 }  // namespace recepcionist_forocoches
 

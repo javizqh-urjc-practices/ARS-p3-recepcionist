@@ -19,7 +19,6 @@ namespace recepcionist_forocoches
 
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 Greet::Greet(
   const std::string & xml_tag_name,
@@ -28,7 +27,6 @@ Greet::Greet(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
-
 }
 
 void
@@ -39,13 +37,13 @@ Greet::halt()
 BT::NodeStatus
 Greet::tick()
 {
-    std::string name;
-    getInput("person_name",name);//Add return FAILURE if no input
+  std::string name;
+  getInput("person_name", name);
 
-    std::string Greeting = "Sit here " + name;
-    sc.say(Greeting);
+  std::string greeting = "Everyone, this is " + name;
+  dialog_.speak(greeting);
 
-    return BT::NodeStatus::SUCCESS;
+  return BT::NodeStatus::SUCCESS;
 }
 
 

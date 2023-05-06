@@ -22,14 +22,13 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sound_play.hpp"
+#include "gb_dialog/DialogInterface.hpp"
 
 namespace recepcionist_forocoches
 {
 class Greet : public BT::ActionNodeBase
 {
-
 public:
-
   // Constructor
   explicit Greet(
     const std::string & xml_tag_name,
@@ -53,7 +52,7 @@ private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
   BT::NodeStatus bt_status_;
-  sound_play::SoundClient sc;
+  gb_dialog::DialogInterface dialog_;
 };
 }  // namespace recepcionist_forocoches
 

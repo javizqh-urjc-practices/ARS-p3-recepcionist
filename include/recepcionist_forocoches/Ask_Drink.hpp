@@ -29,16 +29,13 @@ namespace recepcionist_forocoches
 
 class Ask_Drink : public BT::ActionNodeBase
 {
-
 public:
-
   // Constructor
   explicit Ask_Drink(
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
   void askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
-  void askDrink();
 
   // Startup Callback
   void halt();
@@ -60,7 +57,7 @@ private:
   BT::NodeStatus bt_status_;
 
   gb_dialog::DialogInterface dialog_;
-  sound_play::SoundClient sc_;
+  bool responded_ = false;
 };
 
 

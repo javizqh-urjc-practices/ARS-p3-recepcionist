@@ -19,7 +19,6 @@ namespace recepcionist_forocoches
 
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 Ask_Name::Ask_Name(
   const std::string & xml_tag_name,
@@ -28,8 +27,19 @@ Ask_Name::Ask_Name(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  dialog_.registerCallback(std::bind(&Ask_Name::askNameIntentCB, this, _1), "RequestName");
+}
 
+void Ask_Name::askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+{
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Name: intent [%s]", result.intent.c_str());
 
+  auto name = result.parameters[0].value[0];
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Name: name = %s", name.c_str());
+  responded_ = true;
+  name_ = name.c_str();
+
+  dialog_.speak(result.fulfillment_text);
 }
 
 void
@@ -40,7 +50,19 @@ Ask_Name::halt()
 BT::NodeStatus
 Ask_Name::tick()
 {
+  responded_ = false;
+  if (status() == BT::NodeStatus::IDLE) {
+    dialog_.speak("What is your name?");
+    dialog_.listen();
+  }
 
+  rclcpp::spin_some(dialog_.get_node_base_interface());
+  if (responded_) {
+    setOutput("person_name", name_);
+    return BT::NodeStatus::SUCCESS;
+  } else {
+    return BT::NodeStatus::RUNNING;
+  }
 }
 
 

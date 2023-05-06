@@ -19,7 +19,6 @@ namespace recepcionist_forocoches
 
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 Tell::Tell(
   const std::string & xml_tag_name,
@@ -28,7 +27,6 @@ Tell::Tell(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
-
 }
 
 void
@@ -39,12 +37,11 @@ Tell::halt()
 BT::NodeStatus
 Tell::tick()
 {
-    std::string name;
+  std::string to_tell;
+  getInput("to_tell", to_tell);
+  dialog_.speak(to_tell);
 
-    std::string Greeting = "Sit here " + name;
-    sc.say(Greeting);
-
-    return BT::NodeStatus::SUCCESS;
+  return BT::NodeStatus::SUCCESS;
 }
 
 

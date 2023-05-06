@@ -28,13 +28,13 @@ namespace recepcionist_forocoches
 {
 class Ask_Name : public BT::ActionNodeBase
 {
-
 public:
-
   // Constructor
   explicit Ask_Name(
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
+
+  void askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
 
   // Startup Callback
   void halt();
@@ -54,6 +54,10 @@ private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
   BT::NodeStatus bt_status_;
+
+  gb_dialog::DialogInterface dialog_;
+  std::string name_;
+  bool responded_ = false;
 };
 }  // namespace recepcionist_forocoches
 
