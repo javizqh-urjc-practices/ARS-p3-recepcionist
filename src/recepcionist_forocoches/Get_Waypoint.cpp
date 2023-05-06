@@ -64,6 +64,7 @@ Get_Waypoint::tick()
   std::string id;
   getInput("wp_id", id);
 
+  RCLCPP_INFO(node_->get_logger(), "NEXT TARGET: %s", id.c_str());
   if (id == "door") {
     setOutput("waypoint", door_point_);
   } else if (id == "party") {

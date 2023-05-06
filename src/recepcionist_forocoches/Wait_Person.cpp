@@ -45,19 +45,14 @@ Wait_Person::halt()
 BT::NodeStatus
 Wait_Person::tick()
 {
-  if (status() == BT::NodeStatus::IDLE) {
-    start_time_ = node_->now();
-  }
-
+  RCLCPP_INFO(node_->get_logger(), "Waiting for client...");
   if (last_detection_ == nullptr) {
     return BT::NodeStatus::RUNNING;
   }
 
   for (auto detection : last_detection_->detections) {
     if (detection.results[0].hypothesis.class_id.compare("person") == 0) {
-      if (detection.bbox.center.position.z < 0.3 || detection.bbox.center.position.z > 1.5) {
-        continue;
-      }
+      RCLCPP_INFO(node_->get_logger(), "Client detected, SUCCESS");
       return BT::NodeStatus::SUCCESS;
     }
   }

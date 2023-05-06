@@ -40,6 +40,7 @@ int main(int argc, char * argv[])
   node->declare_parameter("bar.pose.position.x", 0.0);
   node->declare_parameter("bar.pose.position.y", 0.0);
   node->declare_parameter("bar.pose.orientation.w", 0.0);
+  node->declare_parameter("navigation.tolerance", 0.35);
 
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;

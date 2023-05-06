@@ -7,6 +7,7 @@
                 <Sequence name="Go to door">
                     <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="door"/>
                     <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
+                    <Action ID="Wait_Person"/>
                 </Sequence>
                 <Sequence>
                     <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="party"/>
@@ -32,6 +33,7 @@
         <Action ID="Go_to_Waypoint">
             <input_port name="waypoint"/>
         </Action>
+        <Action ID="Wait_Person"/>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

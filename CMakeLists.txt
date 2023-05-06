@@ -11,6 +11,7 @@ find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(action_msgs REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
@@ -32,6 +33,7 @@ set(dependencies
     behaviortree_cpp_v3
     ament_index_cpp
     nav2_msgs
+    tf2_ros
     geometry_msgs
 )
 

@@ -21,6 +21,9 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "nav2_msgs/action/navigate_to_pose.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2_ros/transform_listener.h"
+#include "tf2_ros/buffer.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
@@ -65,9 +68,13 @@ protected:
 private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
+  double tolerance_;
+  bool finished_;
   rclcpp_action::Client<NavigateToPose>::SharedPtr action_client_;
   NavigateToPose::Goal goal_;
   BT::NodeStatus bt_status_;
+  std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 };
 
 }  // namespace recepcionist_forocoches

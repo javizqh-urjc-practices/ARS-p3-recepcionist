@@ -29,10 +29,19 @@ Go_to_Waypoint::Go_to_Waypoint(
   // Settling blackboard
   config().blackboard->get("node", node_);
 
+
+  // Obtaining parameters
+  tolerance_ = node_->get_parameter("navigation.tolerance").as_double();
+  finished_ = false;
+
   // Building Action Client
   action_client_ =
     rclcpp_action::create_client<recepcionist_forocoches::Go_to_Waypoint::NavigateToPose>(
     node_, "navigate_to_pose");
+
+  // Building tf listener
+  tf_buffer_ = std::make_shared<tf2_ros::Buffer>(node_->get_clock());
+  tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, node_);
 
   // Building goal
   goal_ = NavigateToPose::Goal();
@@ -49,6 +58,8 @@ Go_to_Waypoint::tick()
 {
   // --- Initializing Action (if inactive)---
   if (status() == BT::NodeStatus::IDLE) {
+    finished_ = false;
+
     // --- Settling pose ---
     geometry_msgs::msg::PoseStamped wp;
     getInput("waypoint", wp);
@@ -60,7 +71,7 @@ Go_to_Waypoint::tick()
     }
 
     RCLCPP_INFO(
-      node_->get_logger(), "Info: %lf,%lf", goal_.pose.pose.position.x,
+      node_->get_logger(), "Info:%lf,%lf", goal_.pose.pose.position.x,
       goal_.pose.pose.position.y);
 
     // --- Initializing Action ---
@@ -77,6 +88,31 @@ Go_to_Waypoint::tick()
     RCLCPP_INFO(node_->get_logger(), "Sending goal...");
     action_client_->async_send_goal(goal_, send_goal_options);
     bt_status_ = BT::NodeStatus::RUNNING;
+  }
+
+  if (finished_) {
+    return BT::NodeStatus::SUCCESS;
+  }
+
+  // --- Obtaining distance to goal ---
+  try {
+    geometry_msgs::msg::TransformStamped transform = tf_buffer_->lookupTransform(
+      "base_footprint",
+      goal_.pose.header.frame_id,
+      goal_.pose.header.stamp);
+    double x_coord = -transform.transform.translation.x;
+    double y_coord = -transform.transform.translation.y;
+    RCLCPP_INFO(node_->get_logger(), "Actual Coordinates: [%f,%f]", x_coord, y_coord);
+    if (abs(goal_.pose.pose.position.x - x_coord) < tolerance_ &&
+      abs(goal_.pose.pose.position.y - y_coord) < tolerance_)
+    {
+      bt_status_ = BT::NodeStatus::SUCCESS;
+      finished_ = true;
+      action_client_->async_cancel_all_goals();
+      RCLCPP_INFO(node_->get_logger(), "Target Completed");
+    }
+  } catch (tf2::TransformException & e) {
+    RCLCPP_ERROR(node_->get_logger(), "Error while looking up transform: %s", e.what());
   }
 
   return bt_status_;
@@ -96,34 +132,40 @@ Go_to_Waypoint::goal_response_callback(const GoalHandleNavigateToPose::SharedPtr
 
 void
 Go_to_Waypoint::feedback_callback(
-  GoalHandleNavigateToPose::SharedPtr,
+  GoalHandleNavigateToPose::SharedPtr goal,
   std::shared_ptr<const NavigateToPose::Feedback> feedback)
 {
-  RCLCPP_INFO(node_->get_logger(), "Feedback received: %d", feedback.get()->number_of_recoveries);
   (void)feedback;
 }
 
 void
 Go_to_Waypoint::result_callback(const GoalHandleNavigateToPose::WrappedResult & result)
 {
+  if (finished_) {
+    bt_status_ = BT::NodeStatus::SUCCESS;
+  }
   switch (result.code) {
     case rclcpp_action::ResultCode::SUCCEEDED:
       RCLCPP_INFO(node_->get_logger(), "Goal achieved!!");
       bt_status_ = BT::NodeStatus::SUCCESS;
-      break;
+      finished_ = true;
+      return;
     case rclcpp_action::ResultCode::ABORTED:
       RCLCPP_ERROR(node_->get_logger(), "Goal was aborted");
-      bt_status_ = BT::NodeStatus::FAILURE;
+      bt_status_ = BT::NodeStatus::SUCCESS;
+      finished_ = true;
       return;
     case rclcpp_action::ResultCode::CANCELED:
       RCLCPP_ERROR(node_->get_logger(), "Goal was canceled");
-      bt_status_ = BT::NodeStatus::FAILURE;
+      bt_status_ = BT::NodeStatus::SUCCESS;
+      finished_ = true;
       return;
     default:
       RCLCPP_ERROR(node_->get_logger(), "Unknown result code");
       bt_status_ = BT::NodeStatus::FAILURE;
       return;
   }
+  bt_status_ = BT::NodeStatus::SUCCESS;
 }
 }  // namespace recepcionist_forocoches
 #include "behaviortree_cpp_v3/bt_factory.h"
