@@ -12,6 +12,9 @@ find_package(action_msgs REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(sound_play REQUIRED)
+find_package(dialogflow_ros2_interfaces REQUIRED)
+find_package(gb_dialog REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
 find_package(ZMQ)
@@ -33,6 +36,9 @@ set(dependencies
     ament_index_cpp
     nav2_msgs
     geometry_msgs
+    sound_play
+    dialogflow_ros2_interfaces
+    gb_dialog
 )
 
 include_directories(include ${ZMQ_INCLUDE_DIRS})
@@ -40,11 +46,21 @@ include_directories(include ${ZMQ_INCLUDE_DIRS})
 add_library(recepcionist_go_to_waypoint_bt_node SHARED src/recepcionist_forocoches/Go_to_Waypoint.cpp)
 add_library(recepcionist_get_waypoint_bt_node SHARED src/recepcionist_forocoches/Get_Waypoint.cpp)
 add_library(recepcionist_wait_person_bt_node SHARED src/recepcionist_forocoches/Wait_Person.cpp)
+add_library(recepcionist_ask_person_bt_node SHARED src/recepcionist_forocoches/Ask_Name.cpp)
+add_library(recepcionist_ask_drink_bt_node SHARED src/recepcionist_forocoches/Ask_Drink.cpp)
+add_library(recepcionist_greet_bt_node SHARED src/recepcionist_forocoches/Greet.cpp)
+add_library(recepcionist_order_drink_bt_node SHARED src/recepcionist_forocoches/Order_Drink.cpp)
+add_library(recepcionist_tell_bt_node SHARED src/recepcionist_forocoches/Tell.cpp)
 
 list(APPEND plugin_libs
   recepcionist_go_to_waypoint_bt_node
   recepcionist_get_waypoint_bt_node
   recepcionist_wait_person_bt_node
+  recepcionist_ask_person_bt_node
+  recepcionist_ask_drink_bt_node
+  recepcionist_greet_bt_node
+  recepcionist_order_drink_bt_node
+  recepcionist_tell_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})
