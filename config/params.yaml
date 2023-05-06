@@ -10,8 +10,8 @@ recepcionist_forocoches_node:
     party:
       pose:
         position:
-          x: -1.28
-          y: -0.50
+          x: 0.80
+          y: 4.30
         orientation:
           w: -3.14
     bar:

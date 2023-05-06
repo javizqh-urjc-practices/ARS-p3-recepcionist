@@ -12,6 +12,7 @@ find_package(action_msgs REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
@@ -34,16 +35,19 @@ set(dependencies
     ament_index_cpp
     nav2_msgs
     tf2_ros
+    tf2_geometry_msgs
     geometry_msgs
 )
 
 include_directories(include ${ZMQ_INCLUDE_DIRS})
 
+add_library(recepcionist_find_chair_bt_node SHARED src/recepcionist_forocoches/Find_Chair.cpp)
 add_library(recepcionist_go_to_waypoint_bt_node SHARED src/recepcionist_forocoches/Go_to_Waypoint.cpp)
 add_library(recepcionist_get_waypoint_bt_node SHARED src/recepcionist_forocoches/Get_Waypoint.cpp)
 add_library(recepcionist_wait_person_bt_node SHARED src/recepcionist_forocoches/Wait_Person.cpp)
 
 list(APPEND plugin_libs
+  recepcionist_find_chair_bt_node
   recepcionist_go_to_waypoint_bt_node
   recepcionist_get_waypoint_bt_node
   recepcionist_wait_person_bt_node

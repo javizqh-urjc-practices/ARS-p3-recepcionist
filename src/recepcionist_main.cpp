@@ -45,6 +45,7 @@ int main(int argc, char * argv[])
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
 
+  factory.registerFromPlugin(loader.getOSName("recepcionist_find_chair_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_go_to_waypoint_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_get_waypoint_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_wait_person_bt_node"));

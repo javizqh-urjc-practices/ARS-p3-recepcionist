@@ -1,39 +1,56 @@
-<?xml version="1.0"?>
-<root main_tree_to_execute="BehaviorTree">
-    <!-- ////////// -->
-    <BehaviorTree ID="BehaviorTree">
-        <KeepRunningUntilFailure>
-            <Sequence>
-                <Sequence name="Go to door">
-                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="door"/>
-                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
-                    <Action ID="Wait_Person"/>
-                </Sequence>
-                <Sequence>
-                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="party"/>
-                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
-                </Sequence>
-                <Sequence>
-                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="bar"/>
-                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
-                </Sequence>
-                <Sequence>
-                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="person"/>
-                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
-                </Sequence>
-            </Sequence>
-        </KeepRunningUntilFailure>
-    </BehaviorTree>
-    <!-- ////////// -->
-    <TreeNodesModel>
-        <Action ID="Get_Waypoint">
-            <output_port name="waypoint"/>
-            <input_port default="door" name="wp_id"/>
-        </Action>
-        <Action ID="Go_to_Waypoint">
-            <input_port name="waypoint"/>
-        </Action>
-        <Action ID="Wait_Person"/>
-    </TreeNodesModel>
-    <!-- ////////// -->
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="BehaviorTree">
+    <KeepRunningUntilFailure>
+      <Sequence>
+        <Sequence name="Go to door">
+          <Get_Waypoint wp_id="door"
+                        waypoint="{wp}"/>
+          <Go_to_Waypoint waypoint="{wp}"/>
+          <Wait_Person/>
+        </Sequence>
+        <Sequence>
+          <Get_Waypoint wp_id="party"
+                        waypoint="{wp}"/>
+          <Go_to_Waypoint waypoint="{wp}"/>
+        </Sequence>
+        <Sequence>
+          <Get_Waypoint wp_id="bar"
+                        waypoint="{wp}"/>
+          <Go_to_Waypoint waypoint="{wp}"/>
+        </Sequence>
+        <Sequence>
+          <Find_Chair waypoint="{wp}"/>
+          <Go_to_Waypoint waypoint="{wp}"/>
+        </Sequence>
+        <Sequence>
+          <Get_Waypoint wp_id="person"
+                        waypoint="{wp}"/>
+          <Go_to_Waypoint waypoint="{wp}"/>
+        </Sequence>
+      </Sequence>
+    </KeepRunningUntilFailure>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="Find_Chair"
+            editable="true">
+      <output_port name="waypoint"
+                   default="{wp}"/>
+    </Action>
+    <Action ID="Get_Waypoint"
+            editable="false">
+      <input_port name="wp_id"
+                  default="door"/>
+      <output_port name="waypoint"/>
+    </Action>
+    <Action ID="Go_to_Waypoint"
+            editable="false">
+      <input_port name="waypoint"/>
+    </Action>
+    <Action ID="Wait_Person"
+            editable="false"/>
+  </TreeNodesModel>
+
 </root>
