@@ -17,10 +17,12 @@
 
 #include <string>
 
+#include "tf2/LinearMath/Quaternion.h"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace recepcionist_forocoches
