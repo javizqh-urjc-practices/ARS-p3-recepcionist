@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RECEPCIONIST_FOROCOCHES__ASK_NAME_HPP_
-#define RECEPCIONIST_FOROCOCHES__ASK_NAME_HPP_
+#ifndef RECEPCIONIST_FOROCOCHES__WAIT_DRINK_RECEIVED_HPP_
+#define RECEPCIONIST_FOROCOCHES__WAIT_DRINK_RECEIVED_HPP_
 
 #include <string>
 
@@ -26,16 +26,15 @@
 
 namespace recepcionist_forocoches
 {
-class Ask_Name : public BT::ActionNodeBase
+class Wait_Drink_Received : public BT::ActionNodeBase
 {
 public:
   // Constructor
-  explicit Ask_Name(
+  explicit Wait_Drink_Received(
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
-  void noIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
-  void askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
+  void deliverDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
 
   // Startup Callback
   void halt();
@@ -44,12 +43,7 @@ public:
   BT::NodeStatus tick();
 
   // BT PortsList
-  static BT::PortsList providedPorts()
-  {
-    return {
-      BT::OutputPort<std::string>("person_name")
-    };
-  }
+  static BT::PortsList providedPorts() {return {};}
 
 private:
   rclcpp::Node::SharedPtr node_;
@@ -62,4 +56,4 @@ private:
 };
 }  // namespace recepcionist_forocoches
 
-#endif  // RECEPCIONIST_FOROCOCHES__ASK_NAME_HPP_
+#endif  // RECEPCIONIST_FOROCOCHES__WAIT_DRINK_RECEIVED_HPP_

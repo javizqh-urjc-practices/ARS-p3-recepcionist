@@ -1,4 +1,4 @@
-// Copyright 2023 Intelligent Robotics Lab
+// Copyright 2021 Intelligent Robotics Lab
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "recepcionist_forocoches/Ask_Drink.hpp"
+#include "recepcionist_forocoches/Wait_Drink_Received.hpp"
 
 namespace recepcionist_forocoches
 {
@@ -20,61 +20,46 @@ namespace recepcionist_forocoches
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
 
-Ask_Drink::Ask_Drink(
+Wait_Drink_Received::Wait_Drink_Received(
   const std::string & xml_tag_name,
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf)
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
-  // dialog_.registerCallback(std::bind(&Ask_Drink::noIntentCB, this, _1));
-  dialog_.registerCallback(std::bind(&Ask_Drink::askDrinkIntentCB, this, _1), "RequestDrink");
+  dialog_.registerCallback(
+    std::bind(
+      &Wait_Drink_Received::deliverDrinkIntentCB, this,
+      _1), "Deliver Drink");
 }
 
-void Ask_Drink::noIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+void Wait_Drink_Received::deliverDrinkIntentCB(
+  dialogflow_ros2_interfaces::msg::DialogflowResult result)
 {
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Drink: No intent [%s]", result.intent.c_str());
+  RCLCPP_INFO(
+    node_->get_logger(), "[ExampleDF] Wait_Drink_Received: intent [%s]", result.intent.c_str());
   responded_ = true;
-}
-
-void Ask_Drink::askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
-{
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: intent [%s]", result.intent.c_str());
-
-  auto drink = result.parameters[0].value[0];
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: drink = %s", drink.c_str());
-  responded_ = true;
-  drink_ = drink.c_str();
-
   dialog_.speak(result.fulfillment_text);
-  sleep(1);
 }
 
 void
-Ask_Drink::halt()
+Wait_Drink_Received::halt()
 {
 }
 
 BT::NodeStatus
-Ask_Drink::tick()
+Wait_Drink_Received::tick()
 {
   responded_ = false;
-  drink_.clear();
   if (status() == BT::NodeStatus::IDLE) {
-    dialog_.speak("What is your favourite drink?");
+    dialog_.speak("Here is your drink");
     dialog_.listen();
   }
 
   rclcpp::spin_some(dialog_.get_node_base_interface());
   if (responded_) {
     responded_ = false;
-    if (drink_.length() > 0) {
-      setOutput("drink", drink_);
-      return BT::NodeStatus::SUCCESS;
-    } else {
-      RCLCPP_INFO(node_->get_logger(), "Again");
-      return BT::NodeStatus::FAILURE;
-    }
+    return BT::NodeStatus::SUCCESS;
   } else {
     return BT::NodeStatus::RUNNING;
   }
@@ -85,5 +70,5 @@ Ask_Drink::tick()
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
-  factory.registerNodeType<recepcionist_forocoches::Ask_Drink>("Ask_Drink");
+  factory.registerNodeType<recepcionist_forocoches::Wait_Drink_Received>("Wait_Drink_Received");
 }

@@ -35,6 +35,7 @@ public:
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
+  void noIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
   void askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
 
   // Startup Callback
@@ -58,6 +59,7 @@ private:
 
   gb_dialog::DialogInterface dialog_;
   bool responded_ = false;
+  std::string drink_;
 };
 
 

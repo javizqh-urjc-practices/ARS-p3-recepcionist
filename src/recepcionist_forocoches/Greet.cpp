@@ -40,7 +40,7 @@ Greet::tick()
   std::string name;
   getInput("person_name", name);
 
-  std::string greeting = "Everyone, this is " + name;
+  std::string greeting = "Everyone, this is " + name + ". Sit here please.";
   dialog_.speak(greeting);
 
   return BT::NodeStatus::SUCCESS;

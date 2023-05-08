@@ -59,7 +59,7 @@ Find_Chair::tick()
   // Check if has detections
   if (last_detection_ == nullptr) {
     geometry_msgs::msg::Twist twist;
-    twist.angular.z = 0.2;
+    twist.angular.z = 0.4;
     vel_pub_->publish(twist);
     return BT::NodeStatus::RUNNING;
   }
@@ -103,14 +103,14 @@ Find_Chair::tick()
       wp.pose.position.x = map2chair_msg.transform.translation.x;
       wp.pose.position.y = map2chair_msg.transform.translation.y;
       wp.pose.orientation = map2chair_msg.transform.rotation;
-      setOutput("waypoint", wp);
+      setOutput("chair", wp);
 
       return BT::NodeStatus::SUCCESS;
     }
   }
 
   geometry_msgs::msg::Twist twist;
-  twist.angular.z = 0.2;
+  twist.angular.z = 0.4;
   vel_pub_->publish(twist);
   return BT::NodeStatus::RUNNING;
 }

@@ -27,7 +27,14 @@ Ask_Name::Ask_Name(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  dialog_.registerCallback(std::bind(&Ask_Name::noIntentCB, this, _1));
   dialog_.registerCallback(std::bind(&Ask_Name::askNameIntentCB, this, _1), "RequestName");
+}
+
+void Ask_Name::noIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+{
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Name: No intent [%s]", result.intent.c_str());
+  responded_ = true;
 }
 
 void Ask_Name::askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
@@ -40,6 +47,7 @@ void Ask_Name::askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult
   name_ = name.c_str();
 
   dialog_.speak(result.fulfillment_text);
+  sleep(5);
 }
 
 void
@@ -51,6 +59,7 @@ BT::NodeStatus
 Ask_Name::tick()
 {
   responded_ = false;
+  name_.clear();
   if (status() == BT::NodeStatus::IDLE) {
     dialog_.speak("What is your name?");
     dialog_.listen();
@@ -58,8 +67,13 @@ Ask_Name::tick()
 
   rclcpp::spin_some(dialog_.get_node_base_interface());
   if (responded_) {
-    setOutput("person_name", name_);
-    return BT::NodeStatus::SUCCESS;
+    responded_ = false;
+    if (name_.length() > 0) {
+      setOutput("person_name", name_);
+      return BT::NodeStatus::SUCCESS;
+    } else {
+      return BT::NodeStatus::FAILURE;
+    }
   } else {
     return BT::NodeStatus::RUNNING;
   }

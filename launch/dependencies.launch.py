@@ -25,9 +25,14 @@ def generate_launch_description():
         cmd=['ros2', 'launch', 'darknet_ros', 'darknet_ros.launch.py'],
     )
 
-    # Node for darknet execution
+    # Node for navigation execution
     navigation_launch_cmd = ExecuteProcess(
         cmd=['ros2', 'launch', 'ir_robots', 'navigation.launch.py'],
+    )
+
+    # Node for dialog execution
+    dialog_launch_cmd = ExecuteProcess(
+        cmd=['ros2', 'launch', 'gb_dialog', 'gb_dialog_services_soundplay.launch.py'],
     )
 
     # Node for darknet detection
@@ -57,6 +62,7 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(darknet_launch_cmd)
     ld.add_action(navigation_launch_cmd)
+    ld.add_action(dialog_launch_cmd)
     ld.add_action(darknet_detection_asr)
     ld.add_action(depth_detection_asr)
 
