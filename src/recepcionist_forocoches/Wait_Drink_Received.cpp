@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "recepcionist_forocoches/Ask_Name.hpp"
+#include "recepcionist_forocoches/Wait_Drink_Received.hpp"
 
 namespace recepcionist_forocoches
 {
@@ -20,50 +20,40 @@ namespace recepcionist_forocoches
 using namespace std::chrono_literals;  // NOLINT
 using std::placeholders::_1;
 
-Ask_Name::Ask_Name(
+Wait_Drink_Received::Wait_Drink_Received(
   const std::string & xml_tag_name,
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf)
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
-  dialog_.registerCallback(std::bind(&Ask_Name::askNameIntentCB, this, _1), "RequestName");
+  dialog_.registerCallback(std::bind(&Wait_Drink_Received::deliverDrinkIntentCB, this, _1), "Deliver Drink");
 }
 
-void Ask_Name::askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+void Wait_Drink_Received::deliverDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
 {
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Name: intent [%s]", result.intent.c_str());
-
-  auto name = result.parameters[0].value[0];
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Name: name = %s", name.c_str());
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Wait_Drink_Received: intent [%s]", result.intent.c_str());
   responded_ = true;
-  name_ = name.c_str();
-
   dialog_.speak(result.fulfillment_text);
 }
 
 void
-Ask_Name::halt()
+Wait_Drink_Received::halt()
 {
 }
 
 BT::NodeStatus
-Ask_Name::tick()
+Wait_Drink_Received::tick()
 {
   responded_ = false;
   if (status() == BT::NodeStatus::IDLE) {
-    dialog_.speak("What is your name?");
+    dialog_.speak("Here is your drink");
     dialog_.listen();
   }
 
   rclcpp::spin_some(dialog_.get_node_base_interface());
   if (responded_) {
-    if (name_.length() > 0) {
-      setOutput("person_name", name_);
-      return BT::NodeStatus::SUCCESS;
-    } else {
-      return BT::NodeStatus::FAILURE;
-    }
+    return BT::NodeStatus::SUCCESS;
   } else {
     return BT::NodeStatus::RUNNING;
   }
@@ -74,5 +64,5 @@ Ask_Name::tick()
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
-  factory.registerNodeType<recepcionist_forocoches::Ask_Name>("Ask_Name");
+  factory.registerNodeType<recepcionist_forocoches::Wait_Drink_Received>("Wait_Drink_Received");
 }

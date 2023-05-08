@@ -52,7 +52,7 @@ public:
   {
     return BT::PortsList(
       {
-        BT::OutputPort<geometry_msgs::msg::PoseStamped>("waypoint")
+        BT::OutputPort<geometry_msgs::msg::PoseStamped>("chair")
       });
   }
 

@@ -56,6 +56,7 @@ add_library(recepcionist_ask_drink_bt_node SHARED src/recepcionist_forocoches/As
 add_library(recepcionist_greet_bt_node SHARED src/recepcionist_forocoches/Greet.cpp)
 add_library(recepcionist_order_drink_bt_node SHARED src/recepcionist_forocoches/Order_Drink.cpp)
 add_library(recepcionist_tell_bt_node SHARED src/recepcionist_forocoches/Tell.cpp)
+add_library(recepcionist_wait_drink_bt_node SHARED src/recepcionist_forocoches/Wait_Drink_Received.cpp)
 
 list(APPEND plugin_libs
   recepcionist_find_chair_bt_node
@@ -67,6 +68,7 @@ list(APPEND plugin_libs
   recepcionist_greet_bt_node
   recepcionist_order_drink_bt_node
   recepcionist_tell_bt_node
+  recepcionist_wait_drink_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})
