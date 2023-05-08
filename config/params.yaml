@@ -6,18 +6,20 @@ recepcionist_forocoches_node:
           x: 7.5
           y: -0.5 
         orientation:
-          w: 1.0
+          w: 0.0
     party:
       pose:
         position:
           x: 1.00
           y: 4.30
         orientation:
-          w: 1.0
+          w: -3.14
     bar:
       pose:
         position:
           x: 0.10
           y: 6.00
         orientation:
-          w: 1.0
+          w: -3.14
+    navigation:
+      tolerance: 0.35

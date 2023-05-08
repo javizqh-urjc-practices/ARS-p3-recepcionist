@@ -17,7 +17,6 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
 
 
@@ -35,38 +34,7 @@ def generate_launch_description():
                             }, param_file],
                             arguments=['--ros-args', '--log-level', 'info'])
 
-    # Node for darknet execution
-    darknet_launch_cmd = ExecuteProcess(
-        cmd=['ros2', 'launch', 'darknet_ros', 'darknet_ros.launch.py'],
-    )
-
-    # Node for darknet detection
-    darknet_detection_asr = Node(
-        package='perception_asr',
-        executable='darknet_detection',
-        output='screen',
-        parameters=[{'use_sim_time': True}],
-        remappings=[
-            ('input_bbxs_detection', '/darknet_ros/bounding_boxes'),
-            ('output_detection_2d', '/detection_2d_array')
-        ]
-    )
-
-    # Node for depth detection
-    depth_detection_asr = Node(
-        package='perception_asr',
-        executable='detection_2d_to_3d_depth',
-        output='screen',
-        parameters=[{'use_sim_time': True}],
-        remappings=[
-            ('input_depth', '/camera/depth/image_raw'),
-            ('camera_info', '/camera/depth/camera_info'),
-            ('input_detection_2d', '/detection_2d_array')
-            ])
     ld = LaunchDescription()
     ld.add_action(reception_node)
-    ld.add_action(darknet_launch_cmd)
-    ld.add_action(darknet_detection_asr)
-    ld.add_action(depth_detection_asr)
 
     return ld

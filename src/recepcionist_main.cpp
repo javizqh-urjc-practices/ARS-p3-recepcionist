@@ -40,10 +40,12 @@ int main(int argc, char * argv[])
   node->declare_parameter("bar.pose.position.x", 0.0);
   node->declare_parameter("bar.pose.position.y", 0.0);
   node->declare_parameter("bar.pose.orientation.w", 0.0);
+  node->declare_parameter("navigation.tolerance", 0.35);
 
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
 
+  factory.registerFromPlugin(loader.getOSName("recepcionist_find_chair_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_go_to_waypoint_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_get_waypoint_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_wait_person_bt_node"));
