@@ -27,7 +27,14 @@ Ask_Drink::Ask_Drink(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  // dialog_.registerCallback(std::bind(&Ask_Drink::noIntentCB, this, _1));
   dialog_.registerCallback(std::bind(&Ask_Drink::askDrinkIntentCB, this, _1), "RequestDrink");
+}
+
+void Ask_Drink::noIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+{
+  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Ask_Drink: No intent [%s]", result.intent.c_str());
+  responded_ = true;
 }
 
 void Ask_Drink::askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
@@ -37,9 +44,10 @@ void Ask_Drink::askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResu
   auto drink = result.parameters[0].value[0];
   RCLCPP_INFO(node_->get_logger(), "[ExampleDF] AskForDrink: drink = %s", drink.c_str());
   responded_ = true;
-  setOutput("drink", drink.c_str());
+  drink_ = drink.c_str();
 
   dialog_.speak(result.fulfillment_text);
+  sleep(1);
 }
 
 void
@@ -51,6 +59,7 @@ BT::NodeStatus
 Ask_Drink::tick()
 {
   responded_ = false;
+  drink_.clear();
   if (status() == BT::NodeStatus::IDLE) {
     dialog_.speak("What is your favourite drink?");
     dialog_.listen();
@@ -58,7 +67,14 @@ Ask_Drink::tick()
 
   rclcpp::spin_some(dialog_.get_node_base_interface());
   if (responded_) {
-    return BT::NodeStatus::SUCCESS;
+    responded_ = false;
+    if (drink_.length() > 0) {
+      setOutput("drink", drink_);
+      return BT::NodeStatus::SUCCESS;
+    } else {
+      RCLCPP_INFO(node_->get_logger(), "Again");
+      return BT::NodeStatus::FAILURE;
+    }
   } else {
     return BT::NodeStatus::RUNNING;
   }

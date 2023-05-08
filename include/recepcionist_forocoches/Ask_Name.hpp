@@ -34,6 +34,7 @@ public:
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
+  void noIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
   void askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result);
 
   // Startup Callback

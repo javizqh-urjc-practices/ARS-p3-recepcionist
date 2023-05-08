@@ -52,8 +52,10 @@ Wait_Person::tick()
 
   for (auto detection : last_detection_->detections) {
     if (detection.results[0].hypothesis.class_id.compare("person") == 0) {
-      RCLCPP_INFO(node_->get_logger(), "Client detected, SUCCESS");
-      return BT::NodeStatus::SUCCESS;
+      if (detection.bbox.center.position.z < 1.5) {
+        RCLCPP_INFO(node_->get_logger(), "Client detected, SUCCESS");
+        return BT::NodeStatus::SUCCESS;
+      }
     }
   }
 

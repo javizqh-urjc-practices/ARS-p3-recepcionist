@@ -45,15 +45,15 @@ int main(int argc, char * argv[])
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
 
-  //factory.registerFromPlugin(loader.getOSName("recepcionist_find_chair_bt_node"));
-  //factory.registerFromPlugin(loader.getOSName("recepcionist_go_to_waypoint_bt_node"));
-  //factory.registerFromPlugin(loader.getOSName("recepcionist_get_waypoint_bt_node"));
-  //factory.registerFromPlugin(loader.getOSName("recepcionist_wait_person_bt_node"));
+  factory.registerFromPlugin(loader.getOSName("recepcionist_find_chair_bt_node"));
+  factory.registerFromPlugin(loader.getOSName("recepcionist_go_to_waypoint_bt_node"));
+  factory.registerFromPlugin(loader.getOSName("recepcionist_get_waypoint_bt_node"));
+  factory.registerFromPlugin(loader.getOSName("recepcionist_wait_person_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_ask_person_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_ask_drink_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_greet_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_order_drink_bt_node"));
-  factory.registerFromPlugin(loader.getOSName("recepcionist_tell_bt_node"));
+  // factory.registerFromPlugin(loader.getOSName("recepcionist_tell_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_wait_drink_bt_node"));
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("recepcionist_forocoches");

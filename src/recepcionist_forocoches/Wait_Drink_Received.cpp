@@ -27,12 +27,17 @@ Wait_Drink_Received::Wait_Drink_Received(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
-  dialog_.registerCallback(std::bind(&Wait_Drink_Received::deliverDrinkIntentCB, this, _1), "Deliver Drink");
+  dialog_.registerCallback(
+    std::bind(
+      &Wait_Drink_Received::deliverDrinkIntentCB, this,
+      _1), "Deliver Drink");
 }
 
-void Wait_Drink_Received::deliverDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
+void Wait_Drink_Received::deliverDrinkIntentCB(
+  dialogflow_ros2_interfaces::msg::DialogflowResult result)
 {
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Wait_Drink_Received: intent [%s]", result.intent.c_str());
+  RCLCPP_INFO(
+    node_->get_logger(), "[ExampleDF] Wait_Drink_Received: intent [%s]", result.intent.c_str());
   responded_ = true;
   dialog_.speak(result.fulfillment_text);
 }
@@ -53,6 +58,7 @@ Wait_Drink_Received::tick()
 
   rclcpp::spin_some(dialog_.get_node_base_interface());
   if (responded_) {
+    responded_ = false;
     return BT::NodeStatus::SUCCESS;
   } else {
     return BT::NodeStatus::RUNNING;

@@ -5,29 +5,32 @@
         <KeepRunningUntilFailure>
             <Sequence>
                 <Sequence name="Go to door">
-                    <!--Action ID="Get_Waypoint" waypoint="{wp}" wp_id="door"/-->
-                    <!--Action ID="Go_to_Waypoint" waypoint="{wp}"/-->
-                    <!--Action ID="Wait_Person"/-->
-                    <RetryUntilSuccessfull>
+                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="door"/>
+                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
+                    <Action ID="Wait_Person"/>
+                    <RetryUntilSuccessful num_attempts="100">
                         <Action ID="Ask_Name" person_name="{name}"/>
-                    </RetryUntilSuccessfull>
+                    </RetryUntilSuccessful>
                 </Sequence>
                 <Sequence name="Go to party">
-                    <!--Action ID="Get_Waypoint" waypoint="{wp}" wp_id="party"/-->
-                    <!--Action ID="Go_to_Waypoint" waypoint="{wp}"/-->
-                    <Action ID="Ask_Drink" drink="{drink}"/>
-                    <!--Action ID="Find_Chair" chair="{chair}"/-->
+                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="party"/>
+                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
+                    <RetryUntilSuccessful num_attempts="100">
+                        <Action ID="Ask_Drink" drink="{drink}"/>
+                    </RetryUntilSuccessful>
+                    <Action ID="Find_Chair" chair="{chair}"/>
                     <Action ID="Greet" person_name="{name}"/>
-                    <Action ID="Tell" to_tell="Sit here please"/>
                 </Sequence>
                 <Sequence name="Grab drink">
-                    <!--Action ID="Get_Waypoint" waypoint="{wp}" wp_id="bar"/-->
-                    <!--Action ID="Go_to_Waypoint" waypoint="{wp}"/-->
+                    <Action ID="Get_Waypoint" waypoint="{wp}" wp_id="bar"/>
+                    <Action ID="Go_to_Waypoint" waypoint="{wp}"/>
                     <Action ID="Order_Drink" drink="{drink}"/>
                 </Sequence>
                 <Sequence name="Return drink">
-                    <!--Action ID="Deliver_Drink" chair="{chair}"/-->
-                    <Action ID="Wait_Drink_Received"/>
+                    <Action ID="Deliver_Drink" chair="{chair}"/>
+                    <RetryUntilSuccessful num_attempts="100">
+                        <Action ID="Wait_Drink_Received"/>
+                    </RetryUntilSuccessful>
                 </Sequence>
             </Sequence>
         </KeepRunningUntilFailure>
