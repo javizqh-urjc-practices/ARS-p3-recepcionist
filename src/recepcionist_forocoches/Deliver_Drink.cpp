@@ -78,11 +78,11 @@ Deliver_Drink::tick()
     auto send_goal_options = rclcpp_action::Client<NavigateToPose>::SendGoalOptions();
 
     send_goal_options.goal_response_callback =
-      std::bind(&Go_to_Waypoint::goal_response_callback, this, _1);
+      std::bind(&Deliver_Drink::goal_response_callback, this, _1);
     send_goal_options.feedback_callback =
-      std::bind(&Go_to_Waypoint::feedback_callback, this, _1, _2);
+      std::bind(&Deliver_Drink::feedback_callback, this, _1, _2);
     send_goal_options.result_callback =
-      std::bind(&Go_to_Waypoint::result_callback, this, _1);
+      std::bind(&Deliver_Drink::result_callback, this, _1);
 
     // --- Starting Navigation ---
     RCLCPP_INFO(node_->get_logger(), "Sending goal...");

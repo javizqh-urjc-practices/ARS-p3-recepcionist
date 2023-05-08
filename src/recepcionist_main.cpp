@@ -55,6 +55,7 @@ int main(int argc, char * argv[])
   factory.registerFromPlugin(loader.getOSName("recepcionist_order_drink_bt_node"));
   // factory.registerFromPlugin(loader.getOSName("recepcionist_tell_bt_node"));
   factory.registerFromPlugin(loader.getOSName("recepcionist_wait_drink_bt_node"));
+  factory.registerFromPlugin(loader.getOSName("recepcionist_deliver_drink_bt_node"));
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("recepcionist_forocoches");
   std::string xml_file = pkgpath + "/behavior_tree_xml/recepcionist.xml";
