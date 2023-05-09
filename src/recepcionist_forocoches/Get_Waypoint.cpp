@@ -18,6 +18,7 @@ namespace recepcionist_forocoches
 {
 
 using namespace std::chrono_literals;  // NOLINT
+using std::placeholders::_1;
 
 Get_Waypoint::Get_Waypoint(
   const std::string & xml_tag_name,
@@ -25,6 +26,10 @@ Get_Waypoint::Get_Waypoint(
 : BT::ActionNodeBase(xml_tag_name, conf)
 {
   config().blackboard->get("node", node_);
+  button = false;
+  button_sub_ = node_->create_subscription<kobuki_ros_interfaces::msg::ButtonEvent>(
+    "input_button", 10,
+    std::bind(&Get_Waypoint::button_callback, this, _1));
 
   geometry_msgs::msg::PoseStamped wp;
   double yaw;
@@ -62,6 +67,12 @@ Get_Waypoint::Get_Waypoint(
   bar_point_ = wp;
 }
 
+void Get_Waypoint::button_callback(kobuki_ros_interfaces::msg::ButtonEvent::UniquePtr msg)
+{
+  button = true;
+}
+
+
 void
 Get_Waypoint::halt()
 {
@@ -72,6 +83,10 @@ Get_Waypoint::tick()
 {
   if (status() == BT::NodeStatus::IDLE) {
     start_time_ = node_->now();
+  }
+
+  if (!button) {
+    return BT::NodeStatus::RUNNING;
   }
 
   std::string id;

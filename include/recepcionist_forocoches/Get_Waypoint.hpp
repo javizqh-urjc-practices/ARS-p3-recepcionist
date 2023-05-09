@@ -22,6 +22,7 @@
 #include "behaviortree_cpp_v3/bt_factory.h"
 
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "kobuki_ros_interfaces/msg/button_event.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "rclcpp/rclcpp.hpp"
 
@@ -35,6 +36,7 @@ public:
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
 
+  void button_callback(kobuki_ros_interfaces::msg::ButtonEvent::UniquePtr msg);
   void halt();
   BT::NodeStatus tick();
 
@@ -54,6 +56,9 @@ private:
   geometry_msgs::msg::PoseStamped door_point_;
   geometry_msgs::msg::PoseStamped party_point_;
   geometry_msgs::msg::PoseStamped bar_point_;
+  rclcpp::Subscription<kobuki_ros_interfaces::msg::ButtonEvent>::SharedPtr button_sub_;
+
+  bool button = true;
 };
 
 }  // namespace recepcionist_forocoches

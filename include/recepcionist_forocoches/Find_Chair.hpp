@@ -33,6 +33,7 @@
 #include "vision_msgs/msg/detection3_d_array.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "kobuki_ros_interfaces/msg/sound.hpp"
 
 namespace recepcionist_forocoches
 {
@@ -63,6 +64,9 @@ private:
   vision_msgs::msg::Detection3DArray::UniquePtr last_detection_;
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
   std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
+  kobuki_ros_interfaces::msg::Sound out_sound_;
+  bool found_chair;
 };
 
 }  // namespace recepcionist_forocoches

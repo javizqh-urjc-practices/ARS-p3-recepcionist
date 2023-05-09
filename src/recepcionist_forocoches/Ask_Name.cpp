@@ -27,6 +27,7 @@ Ask_Name::Ask_Name(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
   dialog_.registerCallback(std::bind(&Ask_Name::noIntentCB, this, _1));
   dialog_.registerCallback(std::bind(&Ask_Name::askNameIntentCB, this, _1), "RequestName");
 }
@@ -47,7 +48,8 @@ void Ask_Name::askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult
   name_ = name.c_str();
 
   dialog_.speak(result.fulfillment_text);
-  sleep(5);
+  RCLCPP_INFO(node_->get_logger(), "%s\n", result.fulfillment_text.c_str());
+
 }
 
 void
@@ -62,6 +64,9 @@ Ask_Name::tick()
   name_.clear();
   if (status() == BT::NodeStatus::IDLE) {
     dialog_.speak("What is your name?");
+    RCLCPP_INFO(node_->get_logger(), "What is your name?");
+    out_sound_.value = 0;
+    sound_pub_->publish(out_sound_);
     dialog_.listen();
   }
 

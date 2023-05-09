@@ -32,7 +32,12 @@ def generate_launch_description():
                             parameters=[{
                               'use_sim_time': True
                             }, param_file],
-                            arguments=['--ros-args', '--log-level', 'info'])
+                            arguments=['--ros-args', '--log-level', 'info'],
+                            remappings=[
+                                ('output_vel', '/cmd_vel'),
+                                ('output_sound', '/commands/sound'),
+                                ('input_button', '/events/button')
+                              ])
 
     ld = LaunchDescription()
     ld.add_action(reception_node)

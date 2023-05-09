@@ -27,6 +27,7 @@ Wait_Drink_Received::Wait_Drink_Received(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
   dialog_.registerCallback(
     std::bind(
       &Wait_Drink_Received::deliverDrinkIntentCB, this,
@@ -36,10 +37,11 @@ Wait_Drink_Received::Wait_Drink_Received(
 void Wait_Drink_Received::deliverDrinkIntentCB(
   dialogflow_ros2_interfaces::msg::DialogflowResult result)
 {
-  RCLCPP_INFO(
-    node_->get_logger(), "[ExampleDF] Wait_Drink_Received: intent [%s]", result.intent.c_str());
+  // RCLCPP_INFO(
+  //  node_->get_logger(), "[ExampleDF] Wait_Drink_Received: intent [%s]", result.intent.c_str());
   responded_ = true;
   dialog_.speak(result.fulfillment_text);
+  RCLCPP_INFO(node_->get_logger(), "%s\n", result.fulfillment_text.c_str());
 }
 
 void
@@ -53,6 +55,9 @@ Wait_Drink_Received::tick()
   responded_ = false;
   if (status() == BT::NodeStatus::IDLE) {
     dialog_.speak("Here is your drink");
+    RCLCPP_INFO(node_->get_logger(), "Here is your drink");
+    out_sound_.value = 0;
+    sound_pub_->publish(out_sound_);
     dialog_.listen();
   }
 
