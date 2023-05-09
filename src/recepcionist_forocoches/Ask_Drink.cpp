@@ -28,7 +28,7 @@ Ask_Drink::Ask_Drink(
   // Settling blackboard
   config().blackboard->get("node", node_);
   sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
-  //dialog_.registerCallback(std::bind(&Ask_Drink::noIntentCB, this, _1));
+  // dialog_.registerCallback(std::bind(&Ask_Drink::noIntentCB, this, _1));
   dialog_.registerCallback(std::bind(&Ask_Drink::askDrinkIntentCB, this, _1), "RequestDrink");
 }
 
@@ -49,7 +49,6 @@ void Ask_Drink::askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResu
 
   dialog_.speak(result.fulfillment_text);
   RCLCPP_INFO(node_->get_logger(), "%s\n", result.fulfillment_text.c_str());
-
 }
 
 void

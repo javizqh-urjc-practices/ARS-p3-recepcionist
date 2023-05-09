@@ -109,7 +109,7 @@ Find_Chair::tick()
       wp.pose.orientation = map2chair_msg.transform.rotation;
       setOutput("chair", wp);
 
-      found_chair= true;
+      found_chair = true;
     }
   }
 

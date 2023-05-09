@@ -49,7 +49,6 @@ void Ask_Name::askNameIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult
 
   dialog_.speak(result.fulfillment_text);
   RCLCPP_INFO(node_->get_logger(), "%s\n", result.fulfillment_text.c_str());
-
 }
 
 void

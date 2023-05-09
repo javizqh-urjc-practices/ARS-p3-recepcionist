@@ -21,9 +21,9 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     # Node for darknet execution
-    darknet_launch_cmd = ExecuteProcess(
-        cmd=['ros2', 'launch', 'darknet_ros', 'darknet_ros.launch.py'],
-    )
+    # darknet_launch_cmd = ExecuteProcess(
+    #     cmd=['ros2', 'launch', 'darknet_ros', 'darknet_ros.launch.py'],
+    # )
 
     # Node for navigation execution
     navigation_launch_cmd = ExecuteProcess(
