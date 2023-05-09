@@ -18,6 +18,7 @@ find_package(sound_play REQUIRED)
 find_package(dialogflow_ros2_interfaces REQUIRED)
 find_package(gb_dialog REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(kobuki_ros_interfaces REQUIRED)
 
 find_package(ZMQ)
 if(ZMQ_FOUND)
@@ -43,6 +44,7 @@ set(dependencies
     sound_play
     dialogflow_ros2_interfaces
     gb_dialog
+    kobuki_ros_interfaces
 )
 
 include_directories(include ${ZMQ_INCLUDE_DIRS})

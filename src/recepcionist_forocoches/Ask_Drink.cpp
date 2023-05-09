@@ -27,6 +27,7 @@ Ask_Drink::Ask_Drink(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
   // dialog_.registerCallback(std::bind(&Ask_Drink::noIntentCB, this, _1));
   dialog_.registerCallback(std::bind(&Ask_Drink::askDrinkIntentCB, this, _1), "RequestDrink");
 }
@@ -47,7 +48,7 @@ void Ask_Drink::askDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResu
   drink_ = drink.c_str();
 
   dialog_.speak(result.fulfillment_text);
-  sleep(1);
+  RCLCPP_INFO(node_->get_logger(), "%s\n", result.fulfillment_text.c_str());
 }
 
 void
@@ -62,6 +63,9 @@ Ask_Drink::tick()
   drink_.clear();
   if (status() == BT::NodeStatus::IDLE) {
     dialog_.speak("What is your favourite drink?");
+    RCLCPP_INFO(node_->get_logger(), "What is your favourite drink?");
+    out_sound_.value = 0;
+    sound_pub_->publish(out_sound_);
     dialog_.listen();
   }
 

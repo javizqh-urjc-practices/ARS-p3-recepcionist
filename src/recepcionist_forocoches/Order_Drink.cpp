@@ -27,14 +27,17 @@ Order_Drink::Order_Drink(
 {
   // Settling blackboard
   config().blackboard->get("node", node_);
+  sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
   dialog_.registerCallback(std::bind(&Order_Drink::orderDrinkIntentCB, this, _1), "Order Drink");
 }
 
 void Order_Drink::orderDrinkIntentCB(dialogflow_ros2_interfaces::msg::DialogflowResult result)
 {
-  RCLCPP_INFO(node_->get_logger(), "[ExampleDF] Order_Drink: intent [%s]", result.intent.c_str());
+  // RCLCPP_INFO(
+  //   node_->get_logger(), "[ExampleDF] Order_Drink: intent [%s]", result.intent.c_str());
   responded_ = true;
   dialog_.speak(result.fulfillment_text);
+  RCLCPP_INFO(node_->get_logger(), "%s\n", result.fulfillment_text.c_str());
 }
 
 void
@@ -51,6 +54,9 @@ Order_Drink::tick()
   responded_ = false;
   if (status() == BT::NodeStatus::IDLE) {
     dialog_.speak("I need a " + drink);
+    RCLCPP_INFO(node_->get_logger(), "I need a %s", drink.c_str());
+    out_sound_.value = 0;
+    sound_pub_->publish(out_sound_);
     dialog_.listen();
   }
 

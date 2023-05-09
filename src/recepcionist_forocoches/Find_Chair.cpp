@@ -33,11 +33,13 @@ Find_Chair::Find_Chair(
     std::bind(&Find_Chair::detection_callback, this, _1));
 
   // Building Publisher
-  vel_pub_ = node_->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
+  vel_pub_ = node_->create_publisher<geometry_msgs::msg::Twist>("output_vel", 10);
+  sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
 
   // Building tf listener
   tf_buffer_ = std::make_shared<tf2_ros::Buffer>(node_->get_clock());
   tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, node_);
+  found_chair = false;
 }
 
 void Find_Chair::detection_callback(vision_msgs::msg::Detection3DArray::UniquePtr msg)
@@ -55,7 +57,7 @@ BT::NodeStatus
 Find_Chair::tick()
 {
   RCLCPP_INFO(node_->get_logger(), "Searching Chair...");
-
+  found_chair = false;
   // Check if has detections
   if (last_detection_ == nullptr) {
     geometry_msgs::msg::Twist twist;
@@ -66,13 +68,15 @@ Find_Chair::tick()
 
   // For each detection
   for (auto detection : last_detection_->detections) {
-    if (detection.results[0].hypothesis.class_id.compare("chair") == 0) {
+    if (detection.results[0].hypothesis.class_id.compare("person") == 0) {
+      return BT::NodeStatus::RUNNING;
+    } else if (detection.results[0].hypothesis.class_id.compare("chair") == 0) {
       RCLCPP_INFO(node_->get_logger(), "Chair Detected");
       // Tf from robot to chair
       tf2::Transform robot2chair;
       robot2chair.setOrigin(
         tf2::Vector3(
-          detection.bbox.center.position.z,
+          detection.bbox.center.position.z - 1.5,
           -detection.bbox.center.position.x, 0.0));
       robot2chair.setRotation(tf2::Quaternion(0.0, 0.0, 0.0, 1.0));
 
@@ -105,14 +109,20 @@ Find_Chair::tick()
       wp.pose.orientation = map2chair_msg.transform.rotation;
       setOutput("chair", wp);
 
-      return BT::NodeStatus::SUCCESS;
+      found_chair = true;
     }
   }
 
   geometry_msgs::msg::Twist twist;
   twist.angular.z = 0.4;
   vel_pub_->publish(twist);
-  return BT::NodeStatus::RUNNING;
+  if (found_chair) {
+    out_sound_.value = 0;
+    sound_pub_->publish(out_sound_);
+    return BT::NodeStatus::SUCCESS;
+  } else {
+    return BT::NodeStatus::RUNNING;
+  }
 }
 
 }  // namespace recepcionist_forocoches

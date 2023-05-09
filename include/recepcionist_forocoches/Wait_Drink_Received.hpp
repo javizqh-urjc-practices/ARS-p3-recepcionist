@@ -23,6 +23,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sound_play.hpp"
 #include "gb_dialog/DialogInterface.hpp"
+#include "kobuki_ros_interfaces/msg/sound.hpp"
 
 namespace recepcionist_forocoches
 {
@@ -49,6 +50,8 @@ private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Time start_time_;
   BT::NodeStatus bt_status_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
+  kobuki_ros_interfaces::msg::Sound out_sound_;
 
   gb_dialog::DialogInterface dialog_;
   std::string name_;

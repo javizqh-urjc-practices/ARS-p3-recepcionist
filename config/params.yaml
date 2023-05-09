@@ -4,14 +4,14 @@ recepcionist_forocoches_node:
       pose:
         position:
           x: 7.5
-          y: -0.5 
+          y: -0.5
         orientation:
-          w: 0.0
+          w: -1.5
     party:
       pose:
         position:
           x: 1.00
-          y: 4.30
+          y: 3.30
         orientation:
           w: -3.14
     bar:
@@ -20,6 +20,6 @@ recepcionist_forocoches_node:
           x: 0.10
           y: 6.00
         orientation:
-          w: -3.14
+          w: 1.5
     navigation:
-      tolerance: 0.35
+      tolerance: 0.40

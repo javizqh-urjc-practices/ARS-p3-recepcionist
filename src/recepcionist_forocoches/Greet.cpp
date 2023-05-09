@@ -39,9 +39,9 @@ Greet::tick()
 {
   std::string name;
   getInput("person_name", name);
-
   std::string greeting = "Everyone, this is " + name + ". Sit here please.";
   dialog_.speak(greeting);
+  RCLCPP_INFO(node_->get_logger(), "%s", greeting.c_str());
 
   return BT::NodeStatus::SUCCESS;
 }

@@ -21,9 +21,9 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     # Node for darknet execution
-    darknet_launch_cmd = ExecuteProcess(
-        cmd=['ros2', 'launch', 'darknet_ros', 'darknet_ros.launch.py'],
-    )
+    # darknet_launch_cmd = ExecuteProcess(
+    #     cmd=['ros2', 'launch', 'darknet_ros', 'darknet_ros.launch.py'],
+    # )
 
     # Node for navigation execution
     navigation_launch_cmd = ExecuteProcess(
@@ -40,7 +40,7 @@ def generate_launch_description():
         package='perception_asr',
         executable='darknet_detection',
         output='screen',
-        parameters=[{'use_sim_time': True}],
+        parameters=[{'use_sim_time': False}],
         remappings=[
             ('input_bbxs_detection', '/darknet_ros/bounding_boxes'),
             ('output_detection_2d', '/detection_2d_array')
@@ -52,7 +52,7 @@ def generate_launch_description():
         package='perception_asr',
         executable='detection_2d_to_3d_depth',
         output='screen',
-        parameters=[{'use_sim_time': True}],
+        parameters=[{'use_sim_time': False}],
         remappings=[
             ('input_depth', '/camera/depth/image_raw'),
             ('camera_info', '/camera/depth/camera_info'),
@@ -60,7 +60,7 @@ def generate_launch_description():
             ])
 
     ld = LaunchDescription()
-    ld.add_action(darknet_launch_cmd)
+    # ld.add_action(darknet_launch_cmd)
     ld.add_action(navigation_launch_cmd)
     ld.add_action(dialog_launch_cmd)
     ld.add_action(darknet_detection_asr)
