@@ -1,4 +1,4 @@
-# Receptionist
+# Recepcionist
 
 En esta práctica, el robot debe realizar la prueba del recepcionista (página 59 del [Reglamento](https://athome.robocup.org/wp-content/uploads/2022_rulebook.pdf)), aunque algo descafeinado.
 
@@ -24,15 +24,20 @@ Habrá hasta dos puntos extra en la nota final por hacer un póster del equipo.
 
 ***
 
-# Receptionist-Forocoches V.1.0.0
+# Recepcionist-Forocoches V.1.0.0
+![ROS2 version](https://img.shields.io/badge/ROS2-Humble-blue)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue)
+![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)
+![Build status](https://img.shields.io/badge/Build-Passing-brightgreen)
+![Last commit](https://img.shields.io/github/last-commit/Docencia-fmrico/ASR-0-AvoidObstacle)
+![Pull requests](https://img.shields.io/github/issues-pr-raw/Docencia-fmrico/ASR-0-AvoidObstacle)
+<p align="center">
+  <img src="https://github.com/Docencia-fmrico/recepcionist-forocoches/assets/92941012/eb32c787-7a2a-486e-acd2-91aac19d73cd" width="700"/>
+</p>
 
-*LOGO*
+¡Bienvenidos al repositorio de Receptionist-Forocoches! Somos un equipo altamente cualificado y dedicado que ha trabajado arduamente en este proyecto. Este es un modelo de sistema desarrollado en ROS-2 que permite a un robot navegar hasta varios puntos concretos utilizando mapas implementando capacidades de diálogo mediante DialogFLow y de reconocimiento con OpenCV (darknet-ros).
 
-¡Bienvenidos al repositorio de Receptionist-Forocoches! Somos un equipo altamente cualificado y dedicado que ha trabajado arduamente en este proyecto. Este es un modelo de sistema desarrollado en ROS-2 que permite a un robot navegar hasta varios puntos concretos utilizando mapas, además de poseer la capacidad de mantener un diálogo con el usuario mediante el uso de gb-dialog, y de reconocer tanto a personas como a sillas mediante la librería darknet-ros.
-
-Este proyecto es el resultado de la conjunción de percepción, navegación mediante mapas y diálogo. Todas estas partes se han mejorado y perfeccionado para que el robot pueda, partiendo desde el punto inicial correcto y utilizando un mapa previamente creado, pueda navegar hacia varios puntos especificados, todo ello mientras va preguntando al usuario preguntas concretas como el nombre, su bebida favorita, e incluso la capacidad de ofrecerle sitio en un escenario que se ha representado como un bar.
-
-*VÍDEO DEL KOBUKI EN MOVIMIENTO (LUNES)*
+Asi pues, este proyecto es implementa herramientas de percepción, navegación mediante mapas y diálogo. Todas estas partes se han mejorado y perfeccionado para que el robot pueda, partiendo desde el punto inicial correcto y utilizando un mapa previamente creado, pueda navegar hacia varios puntos especificados, todo ello mientras va preguntando al usuario preguntas concretas como el nombre, su bebida favorita, e incluso la capacidad de ofrecerle sitio en un escenario que se ha representado como un bar.
 
 ## Instalación
 
@@ -54,7 +59,7 @@ colcon build --symlink-install
 source ./install/setup.sh
 ```
 
-3. Recuerda que es importante descargar de forma recursiva la dependencia de darknet y nav2, y una vez se haya descargado, se deben instalar dichos paquetes en la terminal que se esté utilizando.
+3. Recuerda que es importante tener instaladas las dependencia de Darknet-Ros y nav2, y una vez se haya descargado, se deben instalar dichos paquetes en la terminal que se esté utilizando.
 
 Toda está información se puede encontrar de forma más amplia en: https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html
 
@@ -62,9 +67,7 @@ Una vez se haya instalado el repositorio, podrás poner en marcha tu robot y hac
 
 ## Modo de uso
 
-Para lanzar el paquete Receptionist-Forocoches en ROS-2, es necesitario utilizar 2 launchers. Un launcher llamado dependencies.launch.py, que incluye todas las dependencias que hay que lanzar; y otro llamado receptionist_forocoches.launch.py, en el cual se incluye el ejecutable completo del paquete y que puede lanzarse tantas veces como se solciite.
-
-Además, es importante asegurarse de conectar los correspondientes paquetes de sincronización con el robot Kobuki para que el sistema puede recibir y enviar datos correctamente.
+Para lanzar el paquete Receptionist-Forocoches en ROS-2, es necesitario utilizar 2 launchers. Un launcher de inicialización, dependencies.launch.py, que incluye todas las dependencias que hay que lanzar; y  receptionist_forocoches.launch.py, en el cual se incluye el ejecutable completo del paquete y contiene el comportamiento principal del robot.
 
 ```sh
 ros2 launch receptionist-forocoches dependencies.launch.py
@@ -78,10 +81,6 @@ El nodo Wait_Person es el nodo que se encarga de detectar a la persona que está
 Estos nodo reciben mensajes de detección de una persona y de una silla, respectivamente, en 3D de la cámara mediante el uso del paquete perception_asr y utilizando la información de la transformación de la cámara con respecto al robot para calcular la posición de la persona y/o de la silla en el marco de referencia del robot.
 
 Estos dos nodos heredan de la clase BT::ActionNodeBase y contiene una serie de métodos para el procesamiento de datos. El método de tick() es el que se ejecuta cuando el nodo es activado y su función es determinar si ha detectado una persona en el caso del nodo Wait_Person, o una silla en el caso del nodo Find_Chair. Si no se ha recibido una detección de una persona o de una silla recientemente devuelve estado de fallo.
-
-## Comportamiento (Diálogo)
-
-*PENDIENTE DE PRUEBA (LUNES)*
 
 ## Comportamiento (Behavior Tree)
 
