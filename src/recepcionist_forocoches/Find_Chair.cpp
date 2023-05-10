@@ -59,12 +59,15 @@ Find_Chair::tick()
   RCLCPP_INFO(node_->get_logger(), "Searching Chair...");
   found_chair = false;
   // Check if has detections
+  geometry_msgs::msg::Twist twist;
   if (last_detection_ == nullptr) {
-    geometry_msgs::msg::Twist twist;
     twist.angular.z = 0.4;
     vel_pub_->publish(twist);
     return BT::NodeStatus::RUNNING;
   }
+
+  twist.angular.z = 0.6;
+  vel_pub_->publish(twist);
 
   // For each detection
   for (auto detection : last_detection_->detections) {
@@ -113,7 +116,6 @@ Find_Chair::tick()
     }
   }
 
-  geometry_msgs::msg::Twist twist;
   twist.angular.z = 0.4;
   vel_pub_->publish(twist);
   if (found_chair) {

@@ -30,7 +30,7 @@ def generate_launch_description():
                             executable='rec_forocoches',
                             output='screen',
                             parameters=[{
-                              'use_sim_time': True
+                              'use_sim_time': False
                             }, param_file],
                             arguments=['--ros-args', '--log-level', 'info'],
                             remappings=[
