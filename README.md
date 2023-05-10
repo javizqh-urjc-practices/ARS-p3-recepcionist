@@ -29,11 +29,11 @@ Habrá hasta dos puntos extra en la nota final por hacer un póster del equipo.
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
 ![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)
 ![Build status](https://github.com/Docencia-fmrico/recepcionist-forocoches/actions/workflows/lint.yml/badge.svg?branch=main)
-![Last commit](https://img.shields.io/github/last-commit/Docencia-fmrico/recepcionist-forocoches)
-![Pull requests](https://img.shields.io/github/issues-pr-raw/Docencia-fmrico/recepcionist-forocoches)
-<p align="center">
-  <img src="https://github.com/Docencia-fmrico/recepcionist-forocoches/assets/92941012/eb32c787-7a2a-486e-acd2-91aac19d73cd" width="700"/>
-</p>
+![Last commit](https://img.shields.io/github/last-commit/Docencia-fmrico/ASR-0-AvoidObstacle)
+![Pull requests](https://img.shields.io/github/issues-pr-raw/Docencia-fmrico/ASR-0-AvoidObstacle)
+  <p align="center">  
+    <img src="https://github.com/Docencia-fmrico/recepcionist-forocoches/assets/92941012/eb32c787-7a2a-486e-acd2-91aac19d73cd" width="700"/>
+  </p>
 
 ¡Bienvenidos al repositorio de Receptionist-Forocoches! Somos un equipo altamente cualificado y dedicado que ha trabajado arduamente en este proyecto. Este es un modelo de sistema desarrollado en ROS-2 que permite a un robot navegar hasta varios puntos concretos utilizando mapas implementando capacidades de diálogo mediante DialogFLow y de reconocimiento con OpenCV (darknet-ros).
 
